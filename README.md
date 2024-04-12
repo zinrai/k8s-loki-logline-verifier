@@ -8,11 +8,18 @@ This Go program is designed to verify the consistency between the number of log 
 
 I wanted to check that the k8s Pod logs generated at [zinrai/k8s-pod-log-generator](https://github.com/zinrai/k8s-pod-log-generator) were stored in Loki without any missing logs.
 
+## Tested Version
+
+- `Loki`: 2.9.5
+    - https://grafana.com/docs/loki/latest/setup/install/helm/install-scalable/
+- `Promtail`: 2.9.3
+    - https://grafana.com/docs/loki/latest/send-data/promtail/installation/#install-using-helm
+
 ## Requirements
 
 - Annotations when [zinrai/k8s-pod-log-generator](https://github.com/zinrai/k8s-loki-logline-verifier) is executed Use the key and value of the number of rows in the attached log.
 - Access to a Grafana Loki instance with `auth_enabled: true`
-  - https://grafana.com/docs/loki/latest/configure/#supported-contents-and-default-values-of-lokiyaml
+    - https://grafana.com/docs/loki/latest/configure/#supported-contents-and-default-values-of-lokiyaml
 - Access to Loki search endpoints deployed on k8s is required.
 - k8s Namespace is set as the unit of tenant id in Loki.
 
