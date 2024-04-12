@@ -2,7 +2,7 @@
 
 This Go program is designed to verify the consistency between the number of log lines reported in Kubernetes pod annotations and the actual number of log lines retrieved from Loki.
 
-**This is a sample implementation of a program to check that the number of lines in the log output by k8s Pod matches the number of lines in the k8s Pod log stored in Loki.**
+**Notice: This is a sample implementation of a program to check that the number of lines in the log output by k8s Pod matches the number of lines in the k8s Pod log stored in Loki.**
 
 ## Motivation
 
