@@ -110,6 +110,12 @@ $ go run main.go
 2024/04/12 11:36:35 Match for pod logger-pod-7 in namespace logger-ns-4: total_log_lines=2560, log_line_count=2560
 2024/04/12 11:36:35 Match for pod logger-pod-10 in namespace logger-ns-5: total_log_lines=2560, log_line_count=2560
 ...
+2024/04/19 11:41:49 Mismatch records:
+Pod: logger-pod-2572, Namespace: logger-ns-10, TotalLogLines: 2560, LogLineCount: 1280
+Pod: logger-pod-2574, Namespace: logger-ns-3, TotalLogLines: 2560, LogLineCount: 1282
+Pod: logger-pod-2971, Namespace: logger-ns-3, TotalLogLines: 2560, LogLineCount: 2802
+Pod: logger-pod-2571, Namespace: logger-ns-9, TotalLogLines: 2560, LogLineCount: 2357
+$
 ```
 
 ## License

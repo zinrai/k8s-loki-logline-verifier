@@ -45,6 +45,13 @@ type LokiQueryRangeResponse struct {
 	} `json:"data"`
 }
 
+type MismatchRecord struct {
+	PodName       string
+	Namespace     string
+	TotalLogLines int
+	LogLineCount  int
+}
+
 func getLogLineCount(podStartTime time.Time, podName string, namespace string, lokiAddress string) (int, error) {
 	startedAt := podStartTime.UnixNano()
 	end := podStartTime.Add(time.Hour).UnixNano() // 1 hour after pod start
@@ -141,6 +148,8 @@ func main() {
 		log.Fatalf("Failed to list namespaces: %v", err)
 	}
 
+	var mismatchRecords []MismatchRecord
+
 	for _, namespace := range namespaces.Items {
 		if !isTargetNamespace(namespace.Name, config.NamespacePrefix) {
 			continue
@@ -165,11 +174,27 @@ func main() {
 			}
 
 			if totalLogLines != logLineCount {
+				mismatchRecord := MismatchRecord{
+					PodName:       pod.Name,
+					Namespace:     namespace.Name,
+					TotalLogLines: totalLogLines,
+					LogLineCount:  logLineCount,
+				}
+				mismatchRecords = append(mismatchRecords, mismatchRecord)
 				log.Printf("Mismatch for pod %s in namespace %s: total_log_lines=%d, log_line_count=%d", pod.Name, namespace.Name, totalLogLines, logLineCount)
 			} else {
 				log.Printf("Match for pod %s in namespace %s: total_log_lines=%d, log_line_count=%d", pod.Name, namespace.Name, totalLogLines, logLineCount)
 			}
 		}
+	}
+
+	if len(mismatchRecords) > 0 {
+		log.Println("Mismatch records:")
+		for _, record := range mismatchRecords {
+			fmt.Printf("Pod: %s, Namespace: %s, TotalLogLines: %d, LogLineCount: %d\n", record.PodName, record.Namespace, record.TotalLogLines, record.LogLineCount)
+		}
+	} else {
+		log.Println("No mismatches found")
 	}
 }
 
